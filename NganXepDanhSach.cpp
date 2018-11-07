@@ -36,6 +36,13 @@ void Push(ElementType X,Stack &s){
 	}	
 }
 
+void PrintStack(Stack &S){
+	while(!EmptyStack(S)){
+		printf("%3d",S.Elements[S.Top]);
+		Pop(S);
+	}
+}
+
 void PrintBinary(int n){
 	Stack s;
 	MakeNullStack(s);
@@ -43,10 +50,7 @@ void PrintBinary(int n){
 		Push(n%2,s);
 		n = n/2;
 	}
-	while(!EmptyStack(s)){
-		printf("%3d",TopStack(s));
-		Pop(s);
-	}
+	PrintStack(s);
 }
 
 
