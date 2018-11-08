@@ -66,10 +66,11 @@ void DeleteList(Position P, List &L){
 	}
 }
 
-int Xoa5(List &L){
-	for(int i = 0; i < L.Last; i++){
-		if((L.Elements[i] % 5) == 0)
-			DeleteList(i+1,L);
+void Xoa5(List &L){	
+	for(Position P = L.Last; P >= 0; P--){
+		if(L.Elements[P-1]%5 == 0){
+			DeleteList(P,L);
+		}
 	}
 }
 
