@@ -4,7 +4,8 @@
  - viet ham xac dinh BAC cua nut tren cay (BAC: so nut con cua nut do)
  - viet ham xac dinh so anh em ruot phai cua nut
  - hien thi duyet tien tu, trung tu, hau tu
-
+ - Viet ham Max(Tree T) de tra ve nut co bac lon nhat trong cay
+ - Tim so luong nut LA' trong cay
 */
 
 #include <stdio.h>
@@ -40,6 +41,7 @@ void ReadTree(Tree &T){
 	printf("\nGia tri cua nut goc: ");
 	fflush(stdin);
 	scanf("%c",&T.Data[0]);
+	T.Parent[0] = -1;
 	
 	for(int i = 1; i < T.MaxNode; i++){
 		printf("\n Cha cua nut %d la: ",i);
@@ -53,12 +55,19 @@ void ReadTree(Tree &T){
 
 //Tim so bac cua 1 nut
 int NumberOfNode(Node n, Tree T){
-	int numberOfNode;
+	int numberOfNode = 0;
 	for(int i = 0; i < T.MaxNode; i++){
 		if(T.Parent[i] == n)
 			numberOfNode++;
 	}
 	return numberOfNode;
+}
+
+int isLeaf(Node n, Tree T){
+	if(NumberOfNode(n,T) == 0)
+		return 1;
+	else
+		return 0;
 }
 
 //Xac dinh so anh em ruot phai cua 1 nut
@@ -138,6 +147,27 @@ void PosOrder(Node n, Tree T){
 	printf("%3c",T.Data[n]);
 }
 
+//Tim nut co bac lon nhat
+Node MaxDegree(Tree T){
+	Node MaxNode = 0;//nut co bac cao nhat
+	int MaxChildNode = 0;//so nut con ma nut cha co
+	for(int i = 1; i < T.MaxNode; i++){
+		if(NumberOfNode(T.Parent[i],T) > MaxChildNode){
+			MaxChildNode = NumberOfNode(T.Parent[i],T);
+			MaxNode = T.Parent[i];
+		}
+	}
+	return MaxNode;
+}
+
+int NumberOfLeaf(Tree T){
+	int numb = 0;
+	for(int i = 0; i < T.MaxNode; i++){
+		if(isLeaf(i,T))
+			numb++;
+	}
+	return numb;
+}
 
 
 int main(){
@@ -152,13 +182,24 @@ int main(){
 	printf("\nDuyet hau tu::");
 	PosOrder(Root(T),T);
 	
+	printf("\nNut co bac lon nhat: %d",MaxDegree(T));
+	
+	printf("\nSo nut trong la' cay: %d",NumberOfLeaf(T));
+	
+	printf("\nNhap vao nut can xac dinh so la nut la hay khong: ");
+	scanf("%d",&n);	
+	if(isLeaf(n,T))
+		printf("Nut %d la nut la",n);
+	else
+		printf("Nut %d ko phai nut la",n);
+	
 	printf("\nNhap vao nut can xac dinh so bac: ");
 	scanf("%d",&n);	
-	printf("\n Bac cua nut %d la: %d", n, NumberOfNode(n,T));
+	printf("\n-Bac cua nut %d la: %d", n, NumberOfNode(n,T));
 	
 	printf("\nNhap vao nut can xac dinh so anh em: ");
 	scanf("%d",&n);
-	printf("\n So anh em cua nut %d la: %d", n, NumberOfRightSibling(n,T));
+	printf("\n-So anh em cua nut %d la: %d", n, NumberOfRightSibling(n,T));
 	
 	getch();
 }
